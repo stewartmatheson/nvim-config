@@ -84,6 +84,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'markdown',
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.spelllang = 'en_au' -- or 'en_gb', 'en' etc.
+  end,
+})
+
 vim.cmd("colorscheme tokyonight-storm")
 require('lualine').setup()
-
