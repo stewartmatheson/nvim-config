@@ -69,17 +69,9 @@ vim.api.nvim_create_autocmd("CursorHold", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.rb", "*.js", "*.mjs", "*.ts", "*.tsx" },
+  pattern = { "*.rb" },
   callback = function()
-    local ft = vim.bo.filetype
-    if ft == "javascript" or ft == "typescript" or ft == "typescriptreact" then
-      vim.lsp.buf.code_action({
-        apply = true,
-        context = { only = { "source.fixAll.eslint" } },
-      })
-    else
-      vim.lsp.buf.format({ async = false })
-    end
+    vim.lsp.buf.format({ async = false })
   end,
 })
 

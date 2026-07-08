@@ -26,8 +26,8 @@ return {
   { "<leader>rf", require("rspec").run_file, desc = "Run Current Spec File" },
   { "<leader>rl", require("rspec").run_line, desc = "Run Current Spec Line" },
 
-  { "ha", "<cmd>Lspsaga code_action<cr>", desc = "Code Action" },
-  { "ho", "<cmd>Lspsaga outline<cr>", desc = "Code Outline" },
+  { "<leader>ha", "<cmd>Lspsaga code_action<cr>", desc = "Code Action" },
+  { "<leader>ho", "<cmd>Lspsaga outline<cr>", desc = "Code Outline" },
 
   -- Git
   { "<leader>g", "<cmd>Git blame<cr>", desc = "Show Blame" },
