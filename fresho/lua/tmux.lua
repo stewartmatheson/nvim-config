@@ -1,7 +1,7 @@
 local M = {}
 
 function M.send_to_tmux(window_name, command, socket_name, debug)
-  local debug = debug or False
+  local debug = debug or false
   local session_name = "0"
   socket_name = socket_name or "default"
 
@@ -63,6 +63,42 @@ function M.send_to_tmux(window_name, command, socket_name, debug)
       vim.log.levels.ERROR
     )
     return
+  end
+
+  local in_mode_cmd = string.format(
+    [[tmux -L %s display-message -p -t %s '#{pane_in_mode}']],
+    socket_name,
+    window_id
+  )
+  local in_mode = vim.fn.system(in_mode_cmd):gsub("%s+$", "")
+
+  if debug then
+    print("[send_to_tmux] pane_in_mode: [" .. in_mode .. "]")
+  end
+
+  if in_mode == "1" then
+    if debug then
+      print("[send_to_tmux] pane is in copy mode, cancelling before send-keys")
+    end
+
+    vim.fn.system({
+      "tmux",
+      "-L",
+      socket_name,
+      "send-keys",
+      "-t",
+      window_id,
+      "-X",
+      "cancel",
+    })
+
+    if vim.v.shell_error ~= 0 then
+      vim.notify(
+        string.format("[send_to_tmux] failed to cancel copy mode for window_id=%s on socket '%s'", window_id, socket_name),
+        vim.log.levels.ERROR
+      )
+      return
+    end
   end
 
   if debug then
